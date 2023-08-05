@@ -115,7 +115,7 @@ app.post("/employees", function (req, res) {
   client.query(
     sql,
     [
-      body.empCode,
+      body.empcode,
       body.name,
       body.department,
       body.designation,
@@ -141,7 +141,7 @@ app.put("/employees/:empCode", function (req, res) {
   client.query(
     sql,
     [
-      body.empCode,
+      body.empcode,
       body.name,
       body.department,
       body.designation,
