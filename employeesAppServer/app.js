@@ -28,8 +28,6 @@ app.use(function (req, res, next) {
 });
 const port = process.env.PORT || 2410;
 app.listen(port, () => console.log(`Node app listening on port ${port}!`));
-let { getConnection } = require("./modDB");
-
 app.get("/employees", function (req, res) {
   let option = "";
   let optionArr = [];
