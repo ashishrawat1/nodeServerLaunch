@@ -37,15 +37,13 @@ app.use(function (req, res, next) {
 const port = process.env.PORT || 2410;
 app.listen(port, () => console.log(`Node app listening on port ${port}!`));
 
-
-
 app.get("/shops", function (req, res) {
   let sql = "SELECT * FROM shops";
   client.query(sql, function (err, result) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -57,7 +55,7 @@ app.get("/purchases/shops/:id", function (req, res) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -69,7 +67,7 @@ app.get("/purchases/products/:id", function (req, res) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -89,7 +87,7 @@ app.get("/totalpurchase/shop/:id", function (req, res) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -125,7 +123,7 @@ app.get("/products", function (req, res) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -167,7 +165,7 @@ app.get("/purchases", function (req, res) {
           .join(", ")})`;
     productArr.map((pr) => optionArr.push(pr));
   }
- 
+
   let sql = `SELECT * FROM purchases ${option}`;
   if (sort == "QtyAsc") sql += " ORDER BY quantity ASC";
   if (sort == "QtyDesc") sql += " ORDER BY quantity DESC";
@@ -177,7 +175,7 @@ app.get("/purchases", function (req, res) {
     if (err) {
       console.log(err);
       res.status(404).send("Error in fetching Data");
-    }  else {
+    } else {
       res.send(result.rows);
     }
   });
@@ -247,4 +245,3 @@ app.put("/products/:id", function (req, res) {
 });
 
 // ...
-
