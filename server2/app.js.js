@@ -142,20 +142,32 @@ app.get("/products/:id", function (req, res) {
     }
   });
 });
-app.get("/purchases", function (req, res) {
+
+app.get("/purchases", async function (req, res) {
   let shop = req.query.shop;
   let product = req.query.product;
   let sort = req.query.sort;
   let option = "";
   let optionArr = [];
   if (shop) {
+    let s1 = "SELECT shopId FROM Shops WHERE shopName = $1";
+    let res = await client.query(s1, [shop]);
+
     option = option
       ? `${option} AND shopId=$${optionArr.length + 1}`
       : ` WHERE shopId=$${optionArr.length + 1} `;
-    optionArr.push(shop);
+    optionArr.push(res.rows[0].shopid);
   }
   if (product) {
     let productArr = product.split(",");
+    // console.log(productArr);
+    let s1 = `SELECT productId FROM products WHERE productname IN (${productArr
+      .map((pr, index) => `$${index + 1}`)
+      .join(", ")})`;
+    let res = await client.query(s1, productArr);
+
+    // console.log(res);
+    productArr = res.rows.map((r) => r.productid);
     option = option
       ? `${option} AND productId IN (${productArr
           .map((pr, index) => `$${index + optionArr.length + 1}`)

@@ -78,20 +78,25 @@ app.get("/products/:id", function (req, res) {
   });
 });
 app.get("/purchases", function (req, res) {
-  let shop = +req.query.shop;
+  let shop = req.query.shop;
   let product = req.query.product;
   let sort = req.query.sort;
   fs.readFile(fname, "utf-8", function (err, data) {
     if (err) res.status(404).send(err);
     else {
       let rData = JSON.parse(data);
-      let { purchases } = rData;
+      let { purchases, shops,products } = rData;
       let purchasesArr = [...purchases];
       if (shop) {
-        purchasesArr = purchasesArr.filter((pr) => pr.shopId == shop);
+        
+        let id1 = shops.find((sh) => sh.name == shop).shopId;
+        
+        purchasesArr = purchasesArr.filter((pr) => pr.shopId == id1);
       }
       if (product) {
         let productArr = product.split(",");
+        let p1 = products.map(pr => productArr.find(q => q == pr.productName)? pr.productId : null);
+        productArr = p1;
         purchasesArr = purchasesArr.filter((pr) =>
           productArr.find((p) => p == pr.productid)
         );
