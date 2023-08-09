@@ -85,18 +85,16 @@ app.get("/purchases", function (req, res) {
     if (err) res.status(404).send(err);
     else {
       let rData = JSON.parse(data);
-      let { purchases, shops,products } = rData;
+      let { purchases, shops, products } = rData;
       let purchasesArr = [...purchases];
       if (shop) {
-        
-        let id1 = shops.find((sh) => sh.name == shop).shopId;
-        
-        purchasesArr = purchasesArr.filter((pr) => pr.shopId == id1);
+        shop = shop.substring(2);
+
+        purchasesArr = purchasesArr.filter((pr) => pr.shopId == shop);
       }
       if (product) {
         let productArr = product.split(",");
-        let p1 = products.map(pr => productArr.find(q => q == pr.productName)? pr.productId : null);
-        productArr = p1;
+        productArr = productArr.map((curr) => curr.substring(2));
         purchasesArr = purchasesArr.filter((pr) =>
           productArr.find((p) => p == pr.productid)
         );
