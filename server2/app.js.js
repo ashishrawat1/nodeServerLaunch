@@ -150,24 +150,15 @@ app.get("/purchases", async function (req, res) {
   let option = "";
   let optionArr = [];
   if (shop) {
-    let s1 = "SELECT shopId FROM Shops WHERE shopName = $1";
-    let res = await client.query(s1, [shop]);
-
+    shop = shop.substring(2);
     option = option
       ? `${option} AND shopId=$${optionArr.length + 1}`
       : ` WHERE shopId=$${optionArr.length + 1} `;
-    optionArr.push(res.rows[0].shopid);
+    optionArr.push(shop);
   }
   if (product) {
     let productArr = product.split(",");
-    // console.log(productArr);
-    let s1 = `SELECT productId FROM products WHERE productname IN (${productArr
-      .map((pr, index) => `$${index + 1}`)
-      .join(", ")})`;
-    let res = await client.query(s1, productArr);
-
-    // console.log(res);
-    productArr = res.rows.map((r) => r.productid);
+    productArr = productArr.map((curr) => curr.substring(2));
     option = option
       ? `${option} AND productId IN (${productArr
           .map((pr, index) => `$${index + optionArr.length + 1}`)
